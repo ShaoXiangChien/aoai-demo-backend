@@ -5,4 +5,5 @@ fastapi
 openai
 pydantic
 typing
+gunicorn
 uvicorn
