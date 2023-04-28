@@ -1,0 +1,7 @@
+azure-cosmos
+pandas
+numpy
+fastapi
+openai
+pydantic
+typing

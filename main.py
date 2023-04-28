@@ -4,9 +4,7 @@ import azure.cosmos.exceptions as exceptions
 from azure.cosmos.partition_key import PartitionKey
 import pandas as pd
 import numpy as np
-import datetime
 import os
-from enum import Enum
 import openai
 from openai.embeddings_utils import get_embedding, cosine_similarity
 from pydantic import BaseModel
