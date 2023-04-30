@@ -4,5 +4,6 @@ numpy
 fastapi
 openai
 pydantic
+matplotlib
 gunicorn
 uvicorn
