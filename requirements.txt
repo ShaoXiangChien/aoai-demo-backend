@@ -2,8 +2,9 @@ azure-cosmos
 pandas
 numpy
 fastapi
+matplotlib
+scikit-learn
 openai
 pydantic
-matplotlib
 gunicorn
 uvicorn
