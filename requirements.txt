@@ -4,6 +4,7 @@ numpy
 fastapi
 matplotlib
 scikit-learn
+plotly
 openai
 pydantic
 gunicorn
