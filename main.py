@@ -62,16 +62,14 @@ class ChatCompletion(BaseModel):
     content: str
 
 
-@app.get("/items")
-def get_last_n_item(user_id: str=Query(), n: int = Query()) -> list[ChatCompletion]:
+@app.get("/items/{user_id}/{n}")
+def get_last_n_item(user_id: str, n: int) -> list[ChatCompletion]:
     query = "SELECT * FROM c WHERE c.user_id LIKE '{0}%' ORDER BY c._ts DESC".format(
         user_id)
-    logging.info("Executing query: {}".format(query))
     items = list(container.query_items(
         query=query,
         enable_cross_partition_query=True
     ))
-    logging.info("Found {} items".format(len(items)))
     return [{"id": item['id'], "user_id": item['user_id'], "role": item['role'], "content": item['content']} for item in (reversed(items[:n]) if len(items) >= n else items)]
 
 
