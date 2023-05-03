@@ -64,7 +64,7 @@ class ChatCompletion(BaseModel):
 
 @app.get("/items")
 def get_last_n_item(user_id: str=Query(), n: int = Query()) -> list[ChatCompletion]:
-    query = "SELECT * FROM c WHERE c.user_id = '{}' ORDER BY c._ts DESC".format(
+    query = "SELECT * FROM c WHERE c.user_id LIKE '{0}%' ORDER BY c._ts DESC".format(
         user_id)
     logging.info("Executing query: {}".format(query))
     items = list(container.query_items(
