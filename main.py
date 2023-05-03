@@ -67,12 +67,13 @@ def get_last_n_item(user_id: str, n: int) -> list[ChatCompletion]:
     query = "SELECT * FROM c WHERE c.user_id LIKE '{0}%' ORDER BY c._ts DESC".format(
         user_id)
     logging.info("Executing query: {}".format(query))
-    items = list(container.query_items(
-        query=query,
-        enable_cross_partition_query=True
-    ))
-    logging.info("Found {} items".format(len(items)))
-    return [{"role": item['role'], "content": item['content']} for item in (reversed(items[:n]) if len(items) >= n else items)]
+    return query
+#     items = list(container.query_items(
+#         query=query,
+#         enable_cross_partition_query=True
+#     ))
+#     logging.info("Found {} items".format(len(items)))
+#     return [{"role": item['role'], "content": item['content']} for item in (reversed(items[:n]) if len(items) >= n else items)]
 
 
 @app.get("/item")
