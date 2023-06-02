@@ -6,13 +6,16 @@ from azure.cosmos.partition_key import PartitionKey
 import pandas as pd
 import numpy as np
 import os
+import json
 import openai
 from openai.embeddings_utils import get_embedding, cosine_similarity
 from pydantic import BaseModel
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Path, Query
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
 
+load_dotenv()
 openai.api_type = 'azure'
 openai.api_version = "2022-12-01"
 openai.api_key = os.environ.get('openai_key')
@@ -62,10 +65,15 @@ class ChatCompletion(BaseModel):
     content: str
 
 
+class RequestBody(BaseModel):
+    data: str
+
+
 @app.get("/items/{user_id}/{n}")
 def get_last_n_item(user_id: str, n: int) -> list[ChatCompletion]:
     query = "SELECT * FROM c WHERE c.user_id LIKE '{0}%' ORDER BY c._ts DESC".format(
         user_id)
+
     logging.info("Executing query: {}".format(query))
     items = list(container.query_items(
         query=query,
@@ -86,12 +94,21 @@ def create_item(item: ChatCompletion):
     container.create_item(body=item.dict())
 
 
-@app.get("/search")
-def search_docs(user_query: str = Query()):
-    embedding = get_embedding(
-        user_query,
-        engine="text-similarity-curie-001"
-    )
+# @app.get("/search")
+# def search_docs(user_query: str = Query()):
+#     embedding = get_embedding(
+#         user_query,
+#         engine="text-similarity-curie-001"
+#     )
+#     docs['similarities'] = [cosine_similarity(
+#         emb, embedding) for emb in embeddings]
+#     return docs.sort_values(by='similarities', ascending=False).head(3)['Answer'].to_list()
+
+
+@app.post("/search")
+def search_docs_emb(body: RequestBody):
+    embedding = json.loads(body.data).get('data')[0].get('embedding')
+
     docs['similarities'] = [cosine_similarity(
         emb, embedding) for emb in embeddings]
     return docs.sort_values(by='similarities', ascending=False).head(3)['Answer'].to_list()
