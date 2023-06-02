@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'aoai-bot-api'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FDFE386D278540559C7F94C1D0A19992 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4B6C0513F9D0412D9951B080EE3AD225 }}
