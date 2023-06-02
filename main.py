@@ -74,8 +74,7 @@ def get_last_n_item(user_id: str, n: int) -> list[ChatCompletion]:
         query=query,
         enable_cross_partition_query=True
     ))
-    logging.info("Found {} items".format(len(items)))
-    return [{"role": item['role'], "content": item['content']} for item in (reversed(items[:n]) if len(items) >= n else items)]
+    return [{"id": item['id'], "user_id": item['user_id'], "role": item['role'], "content": item['content']} for item in (reversed(items[:n]) if len(items) >= n else items)]
 
 
 @app.get("/item")
