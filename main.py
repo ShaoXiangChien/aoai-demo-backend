@@ -13,13 +13,8 @@ from pydantic import BaseModel
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Path, Query
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
 
-load_dotenv()
-openai.api_type = 'azure'
-openai.api_version = "2022-12-01"
-openai.api_key = os.environ.get('openai_key')
-openai.api_base = os.environ.get('openai_base')
+logging.basicConfig(level=logging.INFO)
 
 app = FastAPI()
 origins = ["*"]
@@ -92,17 +87,6 @@ def get_item(user_id: str = Query(), item_id: str = Query()) -> ChatCompletion:
 @app.post("/")
 def create_item(item: ChatCompletion):
     container.create_item(body=item.dict())
-
-
-# @app.get("/search")
-# def search_docs(user_query: str = Query()):
-#     embedding = get_embedding(
-#         user_query,
-#         engine="text-similarity-curie-001"
-#     )
-#     docs['similarities'] = [cosine_similarity(
-#         emb, embedding) for emb in embeddings]
-#     return docs.sort_values(by='similarities', ascending=False).head(3)['Answer'].to_list()
 
 
 @app.post("/search")
